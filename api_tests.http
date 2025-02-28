@@ -1,0 +1,34 @@
+POST http://localhost:8000/books/
+Content-Type: application/json
+
+{
+    "title": "Clean Code",
+    "author": "Robert Martin",
+    "count_pages": 500,
+    "year": 2021
+}
+
+
+###
+
+GET http://localhost:8000/books/
+
+###
+
+GET http://localhost:8000/books/3
+
+###
+
+DELETE http://localhost:8000/books/1
+
+###
+PUT http://localhost:8000/books/1
+Content-Type: application/json
+
+{    
+    "id": 5,
+    "title": "Architecture Code",
+    "author": "Other",
+    "year": 2021,
+    "pages": 340
+}
