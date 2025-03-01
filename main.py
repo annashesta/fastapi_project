@@ -3,7 +3,7 @@ from fastapi.responses import ORJSONResponse
 from icecream import ic
 
 from routers import v1_router
-
+import sqlalchemy  
 
 # Само приложение fastApi. именно оно запускается сервером и служит точкой входа
 # в нем можно указать разные параметры для сваггера и для ручек (эндпоинтов).

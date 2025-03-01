@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/annashestakova/Documents/ШАД МТС/PythonMTS/fastpi_project/.venv/bin/python" "$0" "$@"
+'''exec' "/Users/annashestakova/Documents/ШАД МТС/PythonMTS/fastapi_project/.venv/bin/python" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

@@ -1,10 +1,8 @@
-version: "3.9"
-
 services:
   db:
     build:
       context: .
-      dockerfile: docker/postgres/dockerfile
+      dockerfile: docker/postgres/Dockerfile
     restart: always
     ports:
       - "5445:5432"
@@ -21,6 +19,3 @@ volumes:
 networks:
   fastapi_project_shad:
     name: fastapi_project_shad
-
-
-

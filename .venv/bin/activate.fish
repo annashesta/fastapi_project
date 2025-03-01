@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/annashestakova/Documents/ШАД МТС/PythonMTS/fastpi_project/.venv"
+set -gx VIRTUAL_ENV "/Users/annashestakova/Documents/ШАД МТС/PythonMTS/fastapi_project/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
