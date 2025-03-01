@@ -1,4 +1,4 @@
-POST http://localhost:8000/books/
+POST http://localhost:8000/api/v1/books/
 Content-Type: application/json
 
 {
@@ -11,24 +11,24 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8000/books/
+GET http://localhost:8000/api/v1/books/
 
 ###
 
-GET http://localhost:8000/books/3
+GET http://localhost:8000/api/v1/books/3
 
 ###
 
-DELETE http://localhost:8000/books/1
+DELETE http://localhost:8000/api/v1/books/1
 
 ###
-PUT http://localhost:8000/books/1
+PUT http://localhost:8000/api/v1/books/5
 Content-Type: application/json
 
 {    
     "id": 5,
     "title": "Architecture Code",
     "author": "Other",
-    "year": 2021,
+    "year": 2025,
     "pages": 340
 }
