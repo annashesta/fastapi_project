@@ -40,8 +40,8 @@ Content-Type: application/json
 
 {    
     "id": 5,
-    "title": "Architecture Code",
-    "author": "Other",
+    "title": "Clean Architecture",
+    "author": "Robert Martin",
     "year": 2025,
     "pages": 340
 }
