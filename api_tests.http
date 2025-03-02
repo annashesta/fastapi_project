@@ -25,17 +25,17 @@ GET http://localhost:8000/api/v1/books/
 ###
 
 # Получаем одну книгу по ее ИД
-GET http://localhost:8000/api/v1/books/3
+GET http://localhost:8000/api/v1/books/0
 
 ###
 
 # Удаляем книгу
-DELETE http://localhost:8000/api/v1/books/1
+DELETE http://localhost:8000/api/v1/books/3
 
 ###
 
 # Обновляем поля в данных о книге
-PUT http://localhost:8000/api/v1/books/5
+PUT http://localhost:8000/api/v1/books/4
 Content-Type: application/json
 
 {    
