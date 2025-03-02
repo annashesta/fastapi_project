@@ -7,11 +7,11 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy import select
-from models.books import Book
-from schemes import IncomingBook, Returnedbook, ReturnedAllbooks
+from src.models.books import Book
+from src.schemes import IncomingBook, Returnedbook, ReturnedAllbooks
 from icecream import ic
 from sqlalchemy.ext.asyncio import AsyncSession
-from configurations import get_async_session
+from src.configurations import get_async_session
 
 # CRUD - Create, Read, Update, Delete
 
@@ -67,15 +67,14 @@ async def get_book(book_id: int, session: DBSession):
 
 
 # Ручка для удаления книги
-@books_router.delete("/{book_id}")
+@books_router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int, session: DBSession):
     deleted_book = await session.get(Book, book_id)
-    ic(deleted_book)  # type: ignore # Красивая и информативная замена для print. Полезна при отладке.
-    
+    ic(deleted_book)  # Красивая и информативная замена для print. Полезна при отладке.
     if deleted_book:
         await session.delete(deleted_book)
-
-    # return Response(status_code=status.HTTP_404_NOT_FOUND)
+    # else:
+        # return Response(status_code=status.HTTP_404_NOT_FOUND)
 
 
 # Ручка для обновления данных о книге   
