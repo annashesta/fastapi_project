@@ -1,9 +1,11 @@
-from fastapi import FastAPI, status, Response
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+from configurations.database import create_db_and_tables, global_init
+from routers import v1_router
 from icecream import ic
 
-from routers import v1_router
-import sqlalchemy  
 
 # Само приложение fastApi. именно оно запускается сервером и служит точкой входа
 # в нем можно указать разные параметры для сваггера и для ручек (эндпоинтов).
@@ -18,5 +20,14 @@ app = FastAPI(
 app.include_router(v1_router)
 
 
-# Для запуска:
-#  uvicorn main:app --reload
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ic("I am here!")
+    global_init()
+    await create_db_and_tables()
+    yield
+
+
+# Для запуска: uvicorn main:app --reload
+
+
