@@ -1,6 +1,5 @@
 __pycache__/
 .venv/
-.vscode/
 postgres_data/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,venv
