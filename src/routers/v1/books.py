@@ -73,12 +73,12 @@ async def delete_book(book_id: int, session: DBSession):
     ic(deleted_book)  # Красивая и информативная замена для print. Полезна при отладке.
     if deleted_book:
         await session.delete(deleted_book)
-    # else:
-        # return Response(status_code=status.HTTP_404_NOT_FOUND)
-
+    else:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+  
 
 # Ручка для обновления данных о книге   
-@books_router.put("/{book_id}", response_model=Returnedbook, status_code=status.HTTP_201_CREATED)
+@books_router.put("/{book_id}", response_model=Returnedbook, status_code=status.HTTP_200_OK )
 async def update_book(book_id: int, new_book_data: Returnedbook, session: DBSession):
     if updated_book := await session.get(Book, book_id):
         updated_book.author = new_book_data.author
