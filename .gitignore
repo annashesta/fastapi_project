@@ -319,4 +319,5 @@ pip-selfcheck.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,venv
+# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,pycharm,venvpostgres_data/
+postgres_data/
