@@ -10,10 +10,12 @@ import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+
 from src.configurations.settings import settings
 from src.models import books  # noqa
 from src.models.base import BaseModel
 from src.models.books import Book  # noqa F401
+from src.models.sellers import Seller
 
 # Переопределяем движок для запуска тестов и подключаем его к тестовой базе.
 # Это решает проблему с сохранностью данных в основной базе приложения.
@@ -41,7 +43,6 @@ def event_loop():
     loop = asyncio.get_event_loop()
     yield loop
     loop.close()
-
 
 # Создаем таблицы в тестовой БД. Предварительно удаляя старые.
 @pytest_asyncio.fixture(scope="session", autouse=True)
@@ -90,3 +91,18 @@ async def async_client(test_app):
         transport=transport, base_url="http://127.0.0.1:8000"
     ) as test_client:
         yield test_client
+
+
+# Фикстура для создания продавца
+@pytest_asyncio.fixture(scope="function")
+async def create_seller(db_session):
+    """Создает продавца для тестов."""
+    seller = Seller(
+        first_name="Test",
+        last_name="Seller",
+        email="test.seller@example.com",
+        password="password123"
+    )
+    db_session.add(seller)
+    await db_session.flush()
+    return seller

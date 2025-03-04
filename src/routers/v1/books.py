@@ -37,6 +37,7 @@ async def create_book(
     "author": book.author,
     "year": book.year,
     "pages": book.pages,
+    "seller_id": book.seller_id,  # Передаем seller_id
     })
 
     session.add(new_book)
@@ -73,9 +74,10 @@ async def delete_book(book_id: int, session: DBSession):
     ic(deleted_book)  # Красивая и информативная замена для print. Полезна при отладке.
     if deleted_book:
         await session.delete(deleted_book)
+        await session.commit()  # Фиксируем изменения в базе данных
     else:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
-  
+
 
 # Ручка для обновления данных о книге   
 @books_router.put("/{book_id}", response_model=Returnedbook, status_code=status.HTTP_200_OK )

@@ -69,6 +69,7 @@ async def get_async_session() -> AsyncGenerator:
 async def create_db_and_tables():
     '''Создает таблицы'''
     from src.models.books import Book
+    from src.models.sellers import Seller
 
     global __async_engine
 
@@ -78,5 +79,17 @@ async def create_db_and_tables():
         )
 
     async with __async_engine.begin() as conn: # асинхронный менеджер контекста
-        # await conn.run_sync(BaseModel.metadata.drop_all) # удаление талицы после сессии
         await conn.run_sync(BaseModel.metadata.create_all)
+
+
+async def delete_db_and_tables():
+    '''Удаляет таблицы'''
+    global __async_engine
+
+    if __async_engine is None:
+        raise ValueError(
+            {"message": "You must call global_init() before using this method"}
+        )
+
+    async with __async_engine.begin() as conn: # асинхронный менеджер контекста
+        await conn.run_sync(BaseModel.metadata.drop_all) # удаление талицы после сессии

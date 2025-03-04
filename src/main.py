@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from src.configurations.database import create_db_and_tables, global_init
+from src.configurations.database import create_db_and_tables, delete_db_and_tables, global_init
 from src.routers import v1_router
 from icecream import ic
 
@@ -13,6 +13,7 @@ async def lifespan(app: FastAPI):
     global_init()
     await create_db_and_tables()
     yield
+    # await delete_db_and_tables()
 
 
 # Само приложение fastApi. именно оно запускается сервером и служит точкой входа

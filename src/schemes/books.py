@@ -15,7 +15,8 @@ class BaseBook(BaseModel):# Базовая модель Pydentik, в кооро�
 # Класс для валидации входящих данных. Не содержит id так как его присваивает БД.
 class IncomingBook(BaseBook): 
     pages: int = Field(default=150, alias="count_pages") 
-    # Пример использования тонкой настройки полей. Передачи в них метаинформации.
+    seller_id: int  # Добавляем поле seller_id
+    
     
     @field_validator ("year")  # Валидатор, проверяет что дата не слишком древняя
     @staticmethod
@@ -30,6 +31,7 @@ class IncomingBook(BaseBook):
 class Returnedbook(BaseBook):
     id: int
     pages: int
+    seller_id: int  # Добавляем поле seller_id
   
     
 # Класс для возврата массива объектов "Книга"
