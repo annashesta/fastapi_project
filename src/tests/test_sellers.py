@@ -182,6 +182,7 @@ async def test_partial_update_seller(db_session, async_client, create_seller):
     assert updated_seller.first_name == updated_data["first_name"]
     assert updated_seller.last_name == seller.last_name  # Остальные поля не изменились
     assert updated_seller.email == seller.email
+  
     
 # 8. Тест на обновление несуществующего продавца
 @pytest.mark.asyncio

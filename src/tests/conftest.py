@@ -94,21 +94,6 @@ async def async_client(test_app):
         yield test_client
 
 
-# # Фикстура для создания продавца
-# @pytest_asyncio.fixture(scope="function")
-# async def create_seller(db_session):
-#     """Создает продавца для тестов."""
-#     seller = Seller(
-#         first_name="Test",
-#         last_name="Seller",
-#         email="test.seller@example.com",
-#         password="password123"
-#     )
-#     db_session.add(seller)
-#     await db_session.flush()
-#     return seller
-
-
 # Фикстура для создания продавца.
 @pytest_asyncio.fixture(scope="function")
 async def create_seller(db_session):
@@ -135,6 +120,7 @@ async def create_seller(db_session):
 #     await db_session.commit()
 
 
+# Фикстура для очистки базы данных между тестами.
 @pytest_asyncio.fixture(scope="function")
 async def db_session():
     async with async_test_engine.connect() as connection:
