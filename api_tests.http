@@ -15,7 +15,7 @@ Content-Type: application/json
 {
     "first_name": "John",
     "last_name": "Doe",
-    "email": "john.doe@example.com",
+    "email": "2john.doe@example.com",
     "password": "securepassword123"
 }
 
@@ -36,13 +36,13 @@ GET http://localhost:8000/api/v1/seller/5
 
 # 4. Обновляем данные продавца (замените {seller_id} на реальный ID)
 # email и password должны быть именно этго селлера, которого изменяем
-PUT http://localhost:8000/api/v1/seller/1
+PUT http://localhost:8000/api/v1/seller/30
 Content-Type: application/json
 
 {
     "first_name": "Jonathan",
     "last_name": "Doe",
-    "email": "02й3john.doe@example.com",
+    "email": "2john.doe@example.com",
     "password": "securepassword123"
 }
 
@@ -63,7 +63,7 @@ Content-Type: application/json
     "author": "Robert Martin",
     "count_pages": 500,
     "year": 2021,
-    "seller_id": 3
+    "seller_id": 30
 }
 
 
@@ -76,12 +76,12 @@ GET http://localhost:8000/api/v1/books/
 ###
 
 # 8. Получаем одну книгу по ее ID (замените {book_id} на реальный ID)
-GET http://localhost:8000/api/v1/books/5
+GET http://localhost:8000/api/v1/books/15
 
 ###
 
 # 9. Обновляем данные книги (замените {book_id} на реальный ID)
-PUT http://localhost:8000/api/v1/books/7
+PUT http://localhost:8000/api/v1/books/15w
 Content-Type: application/json
 
 {

@@ -4,6 +4,7 @@
 """
 
 import asyncio
+import uuid
 
 import httpx
 import pytest
@@ -93,16 +94,50 @@ async def async_client(test_app):
         yield test_client
 
 
-# Фикстура для создания продавца
+# # Фикстура для создания продавца
+# @pytest_asyncio.fixture(scope="function")
+# async def create_seller(db_session):
+#     """Создает продавца для тестов."""
+#     seller = Seller(
+#         first_name="Test",
+#         last_name="Seller",
+#         email="test.seller@example.com",
+#         password="password123"
+#     )
+#     db_session.add(seller)
+#     await db_session.flush()
+#     return seller
+
+
+# Фикстура для создания продавца.
 @pytest_asyncio.fixture(scope="function")
 async def create_seller(db_session):
     """Создает продавца для тестов."""
+    unique_email = f"test.seller+{uuid.uuid4()}@example.com"
     seller = Seller(
         first_name="Test",
         last_name="Seller",
-        email="test.seller@example.com",
+        email=unique_email,
         password="password123"
     )
     db_session.add(seller)
     await db_session.flush()
     return seller
+
+
+# Фикстура для очистки базы данных между тестами.
+# @pytest.fixture(autouse=True)
+# async def cleanup_db(db_session):
+#     yield
+#     # Удаляем все данные из таблиц
+#     await db_session.execute("DELETE FROM books_table")
+#     await db_session.execute("DELETE FROM sellers_table")
+#     await db_session.commit()
+
+
+@pytest_asyncio.fixture(scope="function")
+async def db_session():
+    async with async_test_engine.connect() as connection:
+        async with async_test_session(bind=connection) as session:
+            yield session
+            await session.rollback()  # Откатываем изменения после теста

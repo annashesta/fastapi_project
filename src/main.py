@@ -13,7 +13,7 @@ async def lifespan(app: FastAPI):
     global_init()
     await create_db_and_tables()
     yield
-    # await delete_db_and_tables()
+    # await delete_db_and_tables() 
 
 
 # Само приложение fastApi. именно оно запускается сервером и служит точкой входа

@@ -202,6 +202,24 @@ async def test_update_no_book(db_session, async_client):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 # Тест на удаление книги
+# @pytest.mark.asyncio
+# async def test_delete_book(db_session, async_client, create_seller):
+#     seller = create_seller  # Используем фикстуру для создания продавца
+
+#     # Создаем книгу, связанную с продавцом
+#     book = Book(author="Lermontov", title="Mtziri", pages=510, year=2024, seller_id=seller.id)
+#     db_session.add(book)
+#     await db_session.commit()  # Фиксируем изменения в базе данных
+
+#     # Удаляем книгу
+#     response = await async_client.delete(f"/api/v1/books/{book.id}")
+#     assert response.status_code == status.HTTP_204_NO_CONTENT
+
+#     # Проверяем, что книга удалена из базы
+#     all_books = await db_session.execute(select(Book))
+#     books = all_books.scalars().all()
+#     assert len(books) == 0
+
 @pytest.mark.asyncio
 async def test_delete_book(db_session, async_client, create_seller):
     seller = create_seller  # Используем фикстуру для создания продавца

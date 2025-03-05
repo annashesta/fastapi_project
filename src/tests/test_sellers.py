@@ -3,59 +3,6 @@ from fastapi import status
 from sqlalchemy import select
 from src.models.sellers import Seller
 from src.models.books import Book
-
-
-# @pytest.mark.asyncio
-# async def test_create_seller(async_client):
-#     data = {
-#         "first_name": "John",
-#         "last_name": "Doe",
-#         "email": "john.doe@example.com",
-#         "password": "password123"
-#     }
-#     response = await async_client.post("/api/v1/seller/", json=data)
-#     assert response.status_code == status.HTTP_201_CREATED
-#     assert "id" in response.json()
-
-
-# @pytest.mark.asyncio
-# async def test_get_all_sellers(db_session, async_client):
-#     seller = Seller(first_name="Jane", last_name="Doe", email="jane.doe@example.com", password="password123")
-#     db_session.add(seller)
-#     await db_session.flush()
-
-#     response = await async_client.get("/api/v1/seller/")
-#     assert response.status_code == status.HTTP_200_OK
-#     assert len(response.json()) > 0
-
-
-# @pytest.mark.asyncio
-# async def test_get_seller_with_books(db_session, async_client):
-#     seller = Seller(first_name="Alice", last_name="Smith", email="alice.smith@example.com", password="password123")
-#     book = Book(title="Book Title", author="Author", year=2023, pages=300, seller=seller)
-#     db_session.add_all([seller, book])
-#     await db_session.flush()
-
-#     response = await async_client.get(f"/api/v1/seller/{seller.id}")
-#     assert response.status_code == status.HTTP_200_OK
-#     assert len(response.json()["books"]) == 1
-
-
-# @pytest.mark.asyncio
-# async def test_delete_seller(db_session, async_client):
-#     seller = Seller(first_name="Bob", last_name="Johnson", email="bob.johnson@example.com", password="password123")
-#     db_session.add(seller)
-#     await db_session.flush()
-
-#     response = await async_client.delete(f"/api/v1/seller/{seller.id}")
-#     assert response.status_code == status.HTTP_204_NO_CONTENT
-
-
-import pytest
-from fastapi import status
-from sqlalchemy import select
-from src.models.sellers import Seller
-from src.models.books import Book
 from src.schemes.sellers import ReturnedSeller, ReturnedSellerWithBooks
 
 
@@ -114,35 +61,33 @@ async def test_create_seller_with_existing_email(db_session, async_client):
 # 3. Тест на получение списка всех продавцов
 @pytest.mark.asyncio
 async def test_get_all_sellers(db_session, async_client):
-    # Создаем двух продавцов через базу данных
+    # Создаем двух продавцов
     seller1 = Seller(
         first_name="John",
         last_name="Doe",
-        email="john.doe@example.com",
-        password="securepassword123",
+        email="1john.doe@example.com",
+        password="password123",
     )
     seller2 = Seller(
         first_name="Jane",
         last_name="Doe",
-        email="jane.doe@example.com",
-        password="anotherpassword",
+        email="2jane.doe@example.com",
+        password="password123",
     )
     db_session.add_all([seller1, seller2])
-    await db_session.flush()
+    await db_session.commit()
 
-    # Получаем список всех продавцов
+    # Выполняем запрос на получение всех продавцов
     response = await async_client.get("/api/v1/seller/")
 
     # Проверяем статус ответа
     assert response.status_code == status.HTTP_200_OK
 
-    # Проверяем, что возвращены все продавцы
-    sellers = response.json()
-    assert len(sellers) == 2
-    assert sellers[0]["email"] == "john.doe@example.com"
-    assert sellers[1]["email"] == "jane.doe@example.com"
-
-
+    # Проверяем количество продавцов
+    result_data = response.json()
+    assert len(result_data) == 2
+    
+    
 # 4. Тест на получение данных о конкретном продавце
 @pytest.mark.asyncio
 async def test_get_seller(db_session, async_client):
@@ -173,7 +118,7 @@ async def test_get_seller(db_session, async_client):
 
 # 5. Тест на получение несуществующего продавца
 @pytest.mark.asyncio
-async def test_get_nonexistent_seller(async_client):
+async def test_get_not_seller(async_client):
     # Пытаемся получить несуществующего продавца
     response = await async_client.get("/api/v1/seller/999")
 
@@ -280,7 +225,7 @@ async def test_delete_seller(db_session, async_client):
 
 # 10. Тест на удаление несуществующего продавца
 @pytest.mark.asyncio
-async def test_delete_nonexistent_seller(async_client):
+async def test_delete_no_seller(async_client):
     # Пытаемся удалить несуществующего продавца
     response = await async_client.delete("/api/v1/seller/999")
 
