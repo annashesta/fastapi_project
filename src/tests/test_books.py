@@ -5,194 +5,6 @@ from fastapi import status
 from icecream import ic
 
 
-
-
-
-
-
-
-
-# # Тест на ручку создающую книгу
-# @pytest.mark.asyncio
-# async def test_create_book(async_client):
-#     data = {
-#         "title": "Clean Architecture",
-#         "author": "Robert Martin",
-#         "count_pages": 300,
-#         "year": 2025,
-#     }
-#     response = await async_client.post("/api/v1/books/", json=data)
-
-#     assert response.status_code == status.HTTP_201_CREATED
-
-#     result_data = response.json()
-
-#     resp_book_id = result_data.pop("id", None)
-#     assert resp_book_id, "Book id not returned from endpoint"
-
-#     assert result_data == {
-#         "title": "Clean Architecture",
-#         "author": "Robert Martin",
-#         "pages": 300,
-#         "year": 2025,
-#     }
-
-
-# # Тест на проверку актуальности книги
-# @pytest.mark.asyncio
-# async def test_create_book_with_old_year(async_client):
-#     data = {
-#         "title": "Clean Architecture",
-#         "author": "Robert Martin",
-#         "count_pages": 300,
-#         "year": 1986,
-#     }
-#     response = await async_client.post("/api/v1/books/", json=data)
-
-#     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-
-
-# # Тест на ручку получения списка книг
-# @pytest.mark.asyncio
-# async def test_get_books(db_session, async_client):
-#     # Создаем книги вручную, а не через ручку, чтобы нам не попасться на ошибку которая
-#     # может случиться в POST ручке
-#     book = Book(author="Pushkin", title="Eugeny Onegin", year=2001, pages=104)
-#     book_2 = Book(author="Lermontov", title="Mziri", year=1997, pages=104)
-
-#     db_session.add_all([book, book_2])
-#     await db_session.flush()
-
-#     response = await async_client.get("/api/v1/books/")
-
-#     assert response.status_code == status.HTTP_200_OK
-
-#     assert (
-#         len(response.json()["books"]) == 2
-#     )  # Опасный паттерн! Если в БД есть данные, то тест упадет
-
-#     # Проверяем интерфейс ответа, на который у нас есть контракт.
-#     assert response.json() == {
-#         "books": [
-#             {
-#                 "title": "Eugeny Onegin",
-#                 "author": "Pushkin",
-#                 "year": 2001,
-#                 "id": book.id,
-#                 "pages": 104,
-#             },
-#             {
-#                 "title": "Mziri",
-#                 "author": "Lermontov",
-#                 "year": 1997,
-#                 "id": book_2.id,
-#                 "pages": 104,
-#             },
-#         ]
-#     }
-
-
-# # Тест на ручку получения одной книги
-# @pytest.mark.asyncio
-# async def test_get_single_book(db_session, async_client):
-#     # Создаем книги вручную, а не через ручку, чтобы нам не попасться на ошибку которая
-#     # может случиться в POST ручке
-#     book = Book(author="Pushkin", title="Eugeny Onegin", year=2001, pages=104)
-#     book_2 = Book(author="Lermontov", title="Mziri", year=1997, pages=104)
-
-#     db_session.add_all([book, book_2])
-#     await db_session.flush()
-
-#     response = await async_client.get(f"/api/v1/books/{book.id}")
-
-#     assert response.status_code == status.HTTP_200_OK
-
-#     # Проверяем интерфейс ответа, на который у нас есть контракт.
-#     assert response.json() == {
-#         "title": "Eugeny Onegin",
-#         "author": "Pushkin",
-#         "year": 2001,
-#         "pages": 104,
-#         "id": book.id,
-#     }
-
-# ###
-
-# # Тест на ручку обновления книги
-# @pytest.mark.asyncio
-# async def test_update_book(db_session, async_client):
-#     # Создаем книги вручную, а не через ручку, чтобы нам не попасться на ошибку которая
-#     # может случиться в POST ручке
-#     book = Book(author="Pushkin", title="Eugeny Onegin", year=2001, pages=104)
-
-#     db_session.add(book)
-#     await db_session.flush()
-
-#     response = await async_client.put(
-#         f"/api/v1/books/{book.id}",
-#         json={
-#             "title": "Mziri",
-#             "author": "Lermontov",
-#             "pages": 100,
-#             "year": 2007,
-#             "id": book.id,
-#         },
-#     )
-
-#     assert response.status_code == status.HTTP_200_OK
-#     await db_session.flush()
-
-#     # Проверяем, что обновились все поля
-#     res = await db_session.get(Book, book.id)
-#     assert res.title == "Mziri"
-#     assert res.author == "Lermontov"
-#     assert res.pages == 100
-#     assert res.year == 2007
-#     assert res.id == book.id
-
-# ###
-
-# # Тест на удаление книги
-# @pytest.mark.asyncio
-# async def test_delete_book(db_session, async_client):  # db_session, async_client - фикстуры
-#     # Создаем книгу через базу (не чере ендпоинт)
-#     book = Book(author="Lermontov", title="Mtziri", pages=510, year=2024)
-
-#     db_session.add(book)
-#     await db_session.flush()
-#     ic(book.id)
-
-#     # Тестируем ендпоинттна удаление
-#     response = await async_client.delete(f"/api/v1/books/{book.id}")
-
-#     # Проверяеим статус
-#     assert response.status_code == status.HTTP_204_NO_CONTENT
-    
-#     # Обновляем данные в базе и проверяем все книги через базу
-#     await db_session.flush()
-#     all_books = await db_session.execute(select(Book))
-#     res = all_books.scalars().all()
-    
-#     # Проверяем, что количество проверяемых книг равно 0
-#     assert len(res) == 0
-
-
-# @pytest.mark.asyncio
-# async def test_delete_book_with_invalid_book_id(db_session, async_client):
-#     book = Book(author="Lermontov", title="Mtziri", pages=510, year=2024)
-
-#     db_session.add(book)
-#     await db_session.flush()
-
-#     response = await async_client.delete(f"/api/v1/books/{book.id + 1}")
-
-#     assert response.status_code == status.HTTP_404_NOT_FOUND
-
-####
-
-# Обновленные тесты
-
-
 # Тест на создание книги
 @pytest.mark.asyncio
 async def test_create_book(async_client, create_seller):
@@ -209,57 +21,99 @@ async def test_create_book(async_client, create_seller):
     assert response.status_code == status.HTTP_201_CREATED
 
     result_data = response.json()
-    resp_book_id = result_data.pop("id", None)
-    assert resp_book_id is not None, "Book id not returned from endpoint"
+    assert result_data["title"] == "Clean Architecture"
+    assert result_data["author"] == "Robert Martin"
+    assert result_data["pages"] == 300
+    assert result_data["year"] == 2025
+    assert result_data["seller_id"] == seller.id
 
-    assert result_data == {
-        "title": "Clean Architecture",
-        "author": "Robert Martin",
-        "pages": 300,
-        "year": 2025,
-        "seller_id": seller.id,  # Проверяем seller_id
+ 
+# Тест на проверку актуальности книги (издана не позже 2020 года)
+@pytest.mark.asyncio
+async def test_create_book_with_old_year(async_client):
+    # Данные для создания книги с годом издания раньше 2020
+    data = {
+        "title": "Old Book",
+        "author": "Old Author",
+        "count_pages": 300,
+        "year": 1999,
+        "seller_id": 1,
     }
-    
-    
+
+    # Выполняем запрос на создание книги
+    response = await async_client.post("/api/v1/books/", json=data)
+
+    # Проверяем статус ответа
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    # Проверяем содержимое ответа
+    assert "Year is too old!" in response.text
+
+
 # Тест на получение списка книг
 @pytest.mark.asyncio
 async def test_get_books(db_session, async_client, create_seller):
-    seller = create_seller  # Используем фикстуру для создания продавца
+    # Создаем продавца через фикстуру
+    seller = create_seller
 
-    # Создаем книги, связанные с продавцом
-    book = Book(author="Pushkin", title="Eugeny Onegin", year=2001, pages=104, seller_id=seller.id)
-    book_2 = Book(author="Lermontov", title="Mziri", year=1997, pages=104, seller_id=seller.id)
+    # Создаем книги, связанные с этим продавцом
+    book = Book(
+        author="Pushkin",
+        title="Eugeny Onegin",
+        year=2001,
+        pages=104,
+        seller_id=seller.id,  # Привязываем книгу к созданному продавцу
+    )
+    book_2 = Book(
+        author="Lermontov",
+        title="Mziri",
+        year=1997,
+        pages=104,
+        seller_id=seller.id,  # Привязываем книгу к созданному продавцу
+    )
 
     db_session.add_all([book, book_2])
     await db_session.flush()
+    await db_session.commit()  # Завершаем транзакцию
 
+    # Выполняем запрос на получение всех книг
     response = await async_client.get("/api/v1/books/")
 
+    # Проверяем статус ответа
     assert response.status_code == status.HTTP_200_OK
-    books_data = response.json()["books"]
 
-    assert len(books_data) == 2
+    # Проверяем количество книг
+    result_data = response.json()
+    assert len(result_data["books"]) == 2
 
     # Проверяем интерфейс ответа
-    assert books_data == [
-        {
-            "id": book.id,
-            "title": "Eugeny Onegin",
-            "author": "Pushkin",
-            "year": 2001,
-            "pages": 104,
-            "seller_id": seller.id,  # Проверяем seller_id
-        },
-        {
-            "id": book_2.id,
-            "title": "Mziri",
-            "author": "Lermontov",
-            "year": 1997,
-            "pages": 104,
-            "seller_id": seller.id,  # Проверяем seller_id
-        },
-    ]
-    
+    assert result_data == {
+        "books": [
+            {
+                "id": book.id,
+                "title": "Eugeny Onegin",
+                "author": "Pushkin",
+                "year": 2001,
+                "pages": 104,
+                "seller_id": seller.id,  # Используем реальный ID продавца
+            },
+            {
+                "id": book_2.id,
+                "title": "Mziri",
+                "author": "Lermontov",
+                "year": 1997,
+                "pages": 104,
+                "seller_id": seller.id,  # Используем реальный ID продавца
+            },
+        ]
+    }
+  
+  
+  
+  
+  
+  
+  
     
 # Тест на получение одной книги
 @pytest.mark.asyncio
@@ -285,7 +139,17 @@ async def test_get_single_book(db_session, async_client, create_seller):
         "seller_id": seller.id,  # Проверяем seller_id
     }
     
-    
+
+# Тест на получение несуществующей книги
+@pytest.mark.asyncio
+async def test_get_no_book(db_session, async_client):
+    # Выполняем запрос на получение несуществующей книги
+    response = await async_client.get("/api/v1/books/999")
+
+    # Проверяем статус ответа
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
 # Тест на обновление книги
 @pytest.mark.asyncio
 async def test_update_book(db_session, async_client, create_seller):
@@ -316,27 +180,28 @@ async def test_update_book(db_session, async_client, create_seller):
     assert updated_book.pages == 100
     assert updated_book.year == 2007
     assert updated_book.seller_id == seller.id  # Проверяем seller_id
-    
-    
+
+
+# Тест на обновление несуществующей книги
+@pytest.mark.asyncio
+async def test_update_no_book(db_session, async_client):
+    # Данные для обновления
+    updated_data = {
+        "id": 1,
+        "title": "Updated Title",
+        "author": "Updated Author",
+        "year": 2023,
+        "pages": 400,
+        "seller_id": 2,
+    }
+
+    # Выполняем запрос на обновление несуществующей книги
+    response = await async_client.put("/api/v1/books/999", json=updated_data)
+
+    # Проверяем статус ответа
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
 # Тест на удаление книги
-# @pytest.mark.asyncio
-# async def test_delete_book(db_session, async_client, create_seller):
-#     seller = create_seller  # Используем фикстуру для создания продавца
-
-#     # Создаем книгу, связанную с продавцом
-#     book = Book(author="Lermontov", title="Mtziri", pages=510, year=2024, seller_id=seller.id)
-#     db_session.add(book)
-#     await db_session.flush()
-
-#     response = await async_client.delete(f"/api/v1/books/{book.id}")
-
-#     assert response.status_code == status.HTTP_204_NO_CONTENT
-
-#     # Проверяем, что книга удалена из базы
-#     all_books = await db_session.execute(select(Book))
-#     books = all_books.scalars().all()
-#     assert len(books) == 0
-
 @pytest.mark.asyncio
 async def test_delete_book(db_session, async_client, create_seller):
     seller = create_seller  # Используем фикстуру для создания продавца
@@ -354,3 +219,13 @@ async def test_delete_book(db_session, async_client, create_seller):
     all_books = await db_session.execute(select(Book))
     books = all_books.scalars().all()
     assert len(books) == 0
+
+
+    # Тест на удаление несуществующей книги
+@pytest.mark.asyncio
+async def test_delete_nonexistent_book(db_session, async_client):
+    # Выполняем запрос на удаление несуществующей книги
+    response = await async_client.delete("/api/v1/books/999")
+
+    # Проверяем статус ответа
+    assert response.status_code == status.HTTP_404_NOT_FOUND

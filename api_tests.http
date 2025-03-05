@@ -5,61 +5,17 @@
 # поэтому используем этот плагин. Он тоже хорош :-)
 
 
-
-# # Создаем книгу
-# POST http://localhost:8000/api/v1/books/
-# Content-Type: application/json
-
-# {
-#     "title": "Clean Code",
-#     "author": "Robert Martin",
-#     "count_pages": 500,
-#     "year": 2021
-# }
-
-
-# ###
-
-# # Получаем список книг
-# GET http://localhost:8000/api/v1/books/
-
-# ###
-
-# # Получаем одну книгу по ее ИД
-# GET http://localhost:8000/api/v1/books/2
-
-# ###
-
-# # Удаляем книгу
-# DELETE http://localhost:8000/api/v1/books/3
-
-# ###
-
-# # Обновляем поля в данных о книге
-# PUT http://localhost:8000/api/v1/books/4
-# Content-Type: application/json
-
-# {    
-#     "id": 5,
-#     "title": "Clean Architecture",
-#     "author": "Robert Martin",
-#     "year": 2025,
-#     "pages": 340
-# }
-
-# ###
-
-###
 # 1. Создаем продавца
 #TODO # ВАЖНО!!!  email должен быть уникаьным иначе сервер упадет - это надо обработать
 # TODO при создании некоррекного продавца (не уникальный мейл), id  все равно увеличивается
+# Пришлось добавить try/exept чтобы обратобать падение сервера при повторном использовани мейла для создания селлера
 POST http://localhost:8000/api/v1/seller
 Content-Type: application/json
 
 {
     "first_name": "John",
     "last_name": "Doe",
-    "email": "3_john.doe@example.com",
+    "email": "john.doe@example.com",
     "password": "securepassword123"
 }
 
@@ -73,7 +29,7 @@ GET http://localhost:8000/api/v1/seller
 ###
 
 # 3. Получаем данные о конкретном продавце (замените {seller_id} на реальный ID)
-GET http://localhost:8000/api/v1/seller/3
+GET http://localhost:8000/api/v1/seller/5
 
 
 ###
@@ -98,6 +54,7 @@ DELETE http://localhost:8000/api/v1/seller/3
 ###
 
 # 6. Создаем книгу, связанную с продавцом (замените seller_id на реальный ID)
+# TODO падает сервер
 POST http://localhost:8000/api/v1/books/
 Content-Type: application/json
 
@@ -106,7 +63,7 @@ Content-Type: application/json
     "author": "Robert Martin",
     "count_pages": 500,
     "year": 2021,
-    "seller_id": 5
+    "seller_id": 3
 }
 
 
@@ -124,7 +81,7 @@ GET http://localhost:8000/api/v1/books/5
 ###
 
 # 9. Обновляем данные книги (замените {book_id} на реальный ID)
-PUT http://localhost:8000/api/v1/books/1
+PUT http://localhost:8000/api/v1/books/7
 Content-Type: application/json
 
 {
